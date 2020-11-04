@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	<title>Login | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+	<div style="width: 80%; margin: auto; display: block;">
+		{% if status == 1 %}
+			<p class="alert alert-danger">Wrong password</p>
+		{% elif status == 2 %}
+			<p class="alert alert-danger">User not found with that email</p>
+		{% elif status == 3 %}
+			<p class="alert alert-danger">User already exist with that email</p>
+		{% endif %}
+	</div>
+	<section id="form"><!--form-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-1">
+					<div class="login-form"><!--login form-->
+						<h2>Login to your account</h2>
+						<form method="POST">
+							{% csrf_token %}
+							<input type="email" placeholder="Email address" name="email" required/>
+							<input type="password" placeholder="Password" name="password" required/>
+							<span>
+								<a href="{% url 'forgot_password' %}">Forgot password</a>
+							</span>
+							<button name="sign_in_now" type="submit" class="btn btn-default">Login</button>
+						</form>
+					</div><!--/login form-->
+				</div>
+				<div class="col-sm-1">
+					<h2 class="or">OR</h2>
+				</div>
+				<div class="col-sm-4">
+					<div class="signup-form"><!--sign up form-->
+						<h2>New User Signup!</h2>
+						<form method="POST">
+							{% csrf_token %}
+							<input type="email" placeholder="Email Address" name="email" required/>
+							<input type="password" placeholder="Password" name="password" required/>
+							<button name="sign_up_now" type="submit" class="btn btn-default">Signup</button>
+						</form>
+					</div><!--/sign up form-->
+				</div>
+			</div>
+		</div>
+	</section><!--/form-->
+{% endblock %}

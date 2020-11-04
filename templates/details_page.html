@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Details | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        .showSlide {
+            display: none
+        }
+            .showSlide img {
+                width: 100%;
+            }
+        .slidercontainer {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+        .left, .right {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            background-color: rgba(115, 115, 115, 0.8);
+        }
+        .right {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+            background-color: rgba(115, 115, 115, 0.8);
+        }
+        .content {
+            color: #eff5d4;
+            font-size: 30px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .active {
+            background-color: #717171;
+        }
+        /* Fading animation */
+        .fade {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: 1.5s;
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+        @-webkit-keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+    </style>
+    <div style="margin-bottom: 100px;">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <div class="slidercontainer">
+                {% for img in image_s %}
+                    <div class="showSlide">
+                        <img src="{{img.image.url}}" />
+                        <div class="content">Lorem ipsum dolor sit amet</div>
+                    </div>
+                {% endfor %}
+                <!-- Navigation arrows -->
+                <a class="left" onclick="nextSlide(-1)">❮</a>
+                <a class="right" onclick="nextSlide(1)">❯</a>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-md-6 col-sm-12" style="margin-top: 30px; margin-bottom: 100px;">
+            <p style="font-size: 2.3rem; color: #222;">{{main_prod.name}}</p>
+            <p>{{main_prod.description}}</p>
+            {% if main_prod.discount %}
+                <p style="
+                    text-decoration: line-through;
+                    font-size: 1.7rem;
+                    color: gray;">
+                    Rs. {{main_prod.price}}
+                </p>
+                <p style="
+                    font-size: 2.2rem;
+                    color: tomato;">
+                    Rs. {{main_prod.discounted_price}}
+                </p>
+            {% else %}
+                <p style="
+                    font-size: 2.2rem;
+                    color: tomato;">
+                    Rs. {{main_prod.discounted_price}}
+                </p>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <button class="btn btn-warning" type="submit" name="buy_now">Buy now</button>
+                <a class="btn btn-warning" href="{% url 'add_to_cart' main_prod.id %}">Add to cart</a>
+            </form>
+            <ul style="margin-top: 30px; width: 60%;">
+                {% for spec in spec_s %}
+                    <li style="margin-bottom: 6px; border-bottom: 1px solid gray;">{{spec.text}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 row" style="margin: 10px;">
+        {% for rel_prod in rel_prod_s %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <a href="{% url 'detail' rel_prod.rel_prod.id %}">
+                    <img src="{{rel_prod.rel_prod.thumbnail.url}}" style="width: 300px;">
+                    <p>{{rel_prod.rel_prod.name}}</p>
+                    {% if rel_prod.rel_prod.discount %}
+                        <p style="
+                            text-decoration: line-through;
+                            font-size: 1.7rem;
+                            color: gray;">
+                            Rs. {{main_prod.price}}
+                        </p>
+                        <p style="
+                            font-size: 2.2rem;
+                            color: tomato;">
+                            Rs. {{main_prod.discounted_price}}
+                        </p>
+                    {% else %}
+                        <p style="
+                            font-size: 2.2rem;
+                            color: tomato;">
+                            Rs. {{main_prod.discounted_price}}
+                        </p>
+                    {% endif %}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <script type="text/javascript">
+        var slide_index = 1;
+        displaySlides(slide_index);
+
+        function nextSlide(n) {
+            displaySlides(slide_index += n);
+        }
+
+        function currentSlide(n) {
+            displaySlides(slide_index = n);
+        }
+
+        function displaySlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("showSlide");
+            if (n > slides.length) { slide_index = 1 }
+            if (n < 1) { slide_index = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slide_index - 1].style.display = "block";
+        }
+    </script>
+{% endblock %}

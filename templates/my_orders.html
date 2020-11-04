@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>My Account | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+    {% for ord in orders %}
+        <style type="text/css">
+            .text-detail{
+                display: flex;
+                width: 70%;
+                margin: auto;
+                justify-content: space-around;
+                background: #f0f0e99c;
+                color: #ec9b3a;
+                text-weight: bold;
+                padding: 10px;
+                border-radius: 5px;
+                border-top: 1px solid gray;
+                border-bottom: 1px solid gray;
+                margin-bottom: 10px;
+            }
+
+            .thmb-img{
+                display: flex-inline;
+            }
+
+            .thmb-img img{
+                width: 200px;
+            }
+
+            .main-container{
+                display: flex;
+                justify-content: space-around;
+            }
+
+            @media screen and (max-width: 780px){
+                .text-detail {
+                    width: 95%;
+                    display: block;
+                }
+
+                .thmb-img img{
+                    width: 80%;
+                }
+            }
+        </style>
+        <div style="width: 80%; margin: auto; border-bottom: 1px solid gray; margin-bottom: 10px;">
+            <div class="text-detail">
+                <p><span style="color: #222;">Order status : </span>
+                    {% if ord.payment_status == '1' %}
+                        Payment aborted
+                    {% elif ord.status_message %}
+                        {{ord.status_message}}
+                    {% elif ord.status == '1' %}
+                        Processing
+                    {% elif ord.status == '2' %}
+                        Packed
+                    {% elif ord.status == '3' %}
+                        Shipped
+                    {% elif ord.status == '4' %}
+                        Delivered
+                    {% elif ord.status == '5' %}
+                        Canceled
+                    {% elif ord.status == '6' %}
+                        Requested for refund
+                    {% elif ord.status == '7' %}
+                        Returned
+                    {% endif %}
+                </p>
+                <p><span style="color: #222;">Order id : </span>{{ord.oid}}</p>
+                <p style="color: #555;">{{ord.order_date_time}}</p>
+            </div>
+            <div class="main-container">
+                <div>
+                    {% for item in ord.productlist_set.all %}
+                        <div>
+                            <a class="thmb-img" href="{% url 'detail' item.product.id %}">
+                                <img src="{{item.product.thumbnail.url}}">
+                                <p>{{item.product.name}}   <span style="color: gray;">x{{item.quantity}}</span></p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="margin-left: 30px;">
+                    <p style="color: #696763; font-weight: bold;">Total : {{ord.total}}</p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="oid" value="{{ord.oid}}">
+                        {% if ord.payment_status == '2' and ord.status < '3' %}
+                            <button type="submit" class="btn btn-danger" name="cancel_ord">Cancel order</button>
+                        {% elif ord.payment_status == '2' and ord.status == '4' %}
+                            <button type="submit" class="btn btn-success" name="return_ord">Return order</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <br>
+        </div>
+    {% endfor %}
+{% endblock %}

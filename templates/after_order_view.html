@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Order Status | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        .banner{
+            width: 40%;
+            margin: auto;
+            border: 1px solid gray;
+            border-radius: 10px;
+        }
+
+        .top{
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            background: rgb(249, 175, 70);
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        .text1{
+            font-size: 1.9rem;
+            font-weight: bold;
+            color: gray;
+            margin: 10px;
+            margin-bottom: 0px;
+            border-bottom: 1px solid gray;
+        }
+
+        .text2{
+            color: #e0bc0e;
+            font-size: 2rem;
+            margin: 10px;
+            text-align: center;
+        }
+
+        @media screen and (max-width: ){
+
+        }
+    </style>
+    <div class="banner">
+        <div class="top">
+            Thank you for shopping with us
+        </div>
+        <div>
+            <p class="text1">Order id: </p>
+            <br>
+            <p class="text2">ORD2020090801{{oid}}</p>
+        </div>
+        <a class="btn btn-success" href="{% url 'orders' %}">My Orders</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock %}

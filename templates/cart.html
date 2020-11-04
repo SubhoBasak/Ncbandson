@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load util_tags %}
+
+{% block title %}
+	<title>Login | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+	<section id="cart_items">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="{% url 'index' %}">Home</a></li>
+				  <li class="active">Shopping Cart</li>
+				</ol>
+			</div>
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description"></td>
+							<td class="price">Price</td>
+							<td class="quantity">Quantity</td>
+							<td class="total">Total</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in cart_items %}
+							<tr>
+								<td class="cart_product">
+									<a href=""><img src="{{item.product.thumbnail.url}}" style="width: 100px;"></a>
+									<br>
+									<a href="{% url 'detail' item.product.id %}">{{item.product.name}}</a>
+								</td>
+								<td><div style="width: 100px;"></div></td>
+								<td class="cart_price">
+									<p>{{item.product.discounted_price}}</p>
+								</td>
+								<td class="cart_quantity">
+									<form method="POST">
+										{% csrf_token %}
+										<input type="hidden" name="pid" value="{{item.id}}">
+										<div style="display: inline-flex;">
+											<button type="submit" style="border: none; background: #ddd; color: gray; width: 30px; font-weight: bold;" class="cart_quantity_up" name="chg_qty" value="1"> + </button>
+										</div>
+										<div style="display: inline-flex;">
+											<input class="cart_quantity_input" type="text" name="quantity" value="{{item.quantity}}" autocomplete="off" size="2" readonly>
+										</div>
+										<div style="display: inline-flex;">
+											<button type="submit" style="border: none; background: #ddd; color: gray; width: 30px; font-weight: bold;" class="cart_quantity_up" name="chg_qty" value="0"> - </button>
+										</div>
+									</form>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price">{% mul_on_temp item.quantity item.product.discounted_price %}</p>
+								</td>
+								<td class="cart_delete">
+									<form method="POST">
+										{% csrf_token %}
+										<button type="submit" name="del_from_cart" value="{{item.id}}" class="cart_quantity_delete" style="color: gray;"><i class="fa fa-times"></i></button>
+									</form>
+								</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+
+	<section id="do_action">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="total_area">
+						<ul>
+							<li>Grand total <span>{{grand_total}}</span></li>
+						</ul>
+						<form method="POST">
+							{% csrf_token %}
+							<button class="btn btn-default check_out" type="submit" name="check_out">Check Out</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section><!--/#do_action-->
+{% endblock %}

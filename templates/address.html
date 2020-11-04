@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Address | NCB&SONS</title>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        .top-container{
+            width: 40%;
+            margin: auto;
+            border: 1px solid gray;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            border-radius: 10px;
+        }
+
+        .top-header{
+            background: rgb(249, 175, 70);
+            font-weight: bold;
+            text-align: center;
+            padding-top: 9px;
+            padding-bottom: 1px;
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        .each-input{
+            margin: 10px;
+        }
+
+        .each-input input{
+            border: none;
+            border-bottom: 1px solid gray;
+        }
+
+        .each-input label{
+            color: gray;
+            margin: 10px;
+        }
+
+        .submit_btn{
+            padding: 20px;
+            text-align: center;
+        }
+
+       input:focus, text:focus, select:focus{
+            outline: none;
+       }
+
+       @media screen and (max-width: 1140px){
+            .top-container{
+                width: 50%;
+            }
+       }
+
+       @media screen and (max-width: 1100px){
+            .top-container{
+                width: 60%;
+            }
+       }
+
+       @media screen and (max-width: 680px){
+            .top-container{
+                width: 80%;
+            }
+
+            .each-input label{
+                display: block;
+            }
+
+            .each-input input{
+                display: block;
+            }
+       }
+    </style>
+    <div class="top-container">
+        <div class="top-header">
+            <p style="font-size: 22px; color: #fff;">Address</p>
+        </div>
+        <form method="POST" style="width: 80%; margin: auto; margin-top: 20px;">
+            {% csrf_token %}
+            <div class="each-input">
+                <label for="name">Name</label>
+                <input id="name" type="text" name="name" value="{{cur_address.name}}" required>
+            </div>
+            <div class="each-input">
+                <label for="address">Address</label>
+                <input id="address" type="text" name="address" value="{{cur_address.address}}" required>
+            </div>
+            <div class="each-input">
+                <label for="city">City</label>
+                <input id="city" type="text" name="city" value="{{cur_address.city}}" required>
+            </div>
+            <div class="each-input">
+                <label for="state">State</label>
+                <select class="form-control" name="state">
+                    <option value="Andaman and Nicobar" {% if cur_address.state == 'Andaman and Nicobar' %}selected{% endif %}>Andaman and Nicobar</option>
+                    <option value="Andhra Pradesh" {% if cur_address.state == 'Andhra Pradesh' %}selected{% endif %}>Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh" {% if cur_address.state == 'Arunachal Pradesh' %}selected{% endif %}>Arunachal Pradesh</option>
+                    <option value="Assam" {% if cur_address.state == 'Assam' %}selected{% endif %}>Assam</option>
+                    <option value="Bihar" {% if cur_address.state == 'Bihar' %}selected{% endif %}>Bihar</option>
+                    <option value="Chandigarh" {% if cur_address.state == 'Chandigarh' %}selected{% endif %}>Chandigarh</option>
+                    <option value="Chhattisgarh" {% if cur_address.state == 'Chhattisgarh' %}selected{% endif %}>Chhattisgarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu" {% if cur_address.state == 'Dadra and Nagar Haveli and Daman and Diu' %}selected{% endif %}>Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option value="Delhi" {% if cur_address.state == 'Delhi' %}selected{% endif %}>Delhi</option>
+                    <option value="Goa" {% if cur_address.state == 'Goa' %}selected{% endif %}>Goa</option>
+                    <option value="Gujarat" {% if cur_address.state == 'Gujarat' %}selected{% endif %}>Gujarat</option>
+                    <option value="Haryana" {% if cur_address.state == 'Haryana' %}selected{% endif %}>Haryana</option>
+                    <option value="Himachal Pradesh" {% if cur_address.state == 'Himachal Pradesh' %}selected{% endif %}>Himachal Pradesh</option>
+                    <option value="Jammu and Kashmir" {% if cur_address.state == 'Jammu and Kashmir' %}selected{% endif %}>Jammu and Kashmir</option>
+                    <option value="Jharkhand" {% if cur_address.state == 'Jharkhand' %}selected{% endif %}>Jharkhand</option>
+                    <option value="Karnataka" {% if cur_address.state == 'Karnataka' %}selected{% endif %}>Karnataka</option>
+                    <option value="Kerala" {% if cur_address.state == 'Kerala' %}selected{% endif %}>Kerala</option>
+                    <option value="Ladakh" {% if cur_address.state == 'Ladakh' %}selected{% endif %}>Ladakh</option>
+                    <option value="Lakshadweep" {% if cur_address.state == 'Lakshadweep' %}selected{% endif %}>Lakshadweep</option>
+                    <option value="Madhya Pradesh" {% if cur_address.state == 'Madhya Pradesh' %}selected{% endif %}>Madhya Pradesh</option>
+                    <option value="Maharashtra" {% if cur_address.state == 'Maharashtra' %}selected{% endif %}>Maharashtra</option>
+                    <option value="Manipur" {% if cur_address.state == 'Manipur' %}selected{% endif %}>Manipur</option>
+                    <option value="Meghalaya" {% if cur_address.state == 'Meghalaya' %}selected{% endif %}>Meghalaya</option>
+                    <option value="Mizoram" {% if cur_address.state == 'Mizoram' %}selected{% endif %}>Mizoram</option>
+                    <option value="Nagaland" {% if cur_address.state == 'Nagaland' %}selected{% endif %}>Nagaland</option>
+                    <option value="Odisha" {% if cur_address.state == 'Odisha' %}selected{% endif %}>Odisha</option>
+                    <option value="Puducherry" {% if cur_address.state == 'Puducherry' %}selected{% endif %}>Puducherry</option>
+                    <option value="Punjab" {% if cur_address.state == 'Punjab' %}selected{% endif %}>Punjab</option>
+                    <option value="Rajasthan" {% if cur_address.state == 'Rajasthan' %}selected{% endif %}>Rajasthan</option>
+                    <option value="Sikkim" {% if cur_address.state == 'Sikkim' %}selected{% endif %}>Sikkim</option>
+                    <option value="Tamil Nadu" {% if cur_address.state == 'Tamil Nadu' %}selected{% endif %}>Tamil Nadu</option>
+                    <option value="Telangana" {% if cur_address.state == 'Telangana' %}selected{% endif %}>Telangana</option>
+                    <option value="Tripura" {% if cur_address.state == 'Tripura' %}selected{% endif %}>Tripura</option>
+                    <option value="Uttar Pradesh" {% if cur_address.state == 'Uttar Pradesh' %}selected{% endif %}>Uttar Pradesh</option>
+                    <option value="Uttarakhand" {% if cur_address.state == 'Uttarakhand' %}selected{% endif %}>Uttarakhand</option>
+                    <option value="West Bengal" {% if cur_address.state == 'West Bengal' %}selected{% endif %}>West Bengal</option>
+                </select>
+            </div>
+            <div class="each-input">
+                <label for="pin_code">Pin code</label>
+                <input id="pin_code" type="text" name="pin_code" value="{{cur_address.pin_code}}" maxlength="6" required>
+            </div>
+            <div class="each-input">
+                <label for="phone">Phone</label>
+                <input id="phone" type="text" name="phone" maxlength="13" value="{{cur_address.phone}}" required>
+            </div>
+            <div class="submit_btn">
+                <button class="btn btn-warnings" type="submit" name="submit">Save and continue</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
